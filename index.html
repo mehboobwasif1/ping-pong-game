@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customizable Ping Pong Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Responsive Custom Ping Pong Game</title>
     <style>
         * {
             margin: 0;
@@ -20,13 +20,13 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             overflow-y: auto;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: calc(1.5rem + 1vw); /* Scales title size relative to device width */
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 3px;
             text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -37,22 +37,22 @@
         .menu-card {
             background: #1e293b;
             border-radius: 12px;
-            padding: 30px;
+            padding: 20px;
             width: 100%;
             max-width: 600px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
             border: 1px solid #334155;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #38bdf8;
             border-bottom: 2px solid #334155;
             padding-bottom: 5px;
-            margin-top: 10px;
+            margin-top: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -60,7 +60,7 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
         .form-group {
@@ -74,7 +74,7 @@
         }
 
         label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: #94a3b8;
         }
@@ -83,10 +83,11 @@
             background-color: #0f172a;
             border: 1px solid #475569;
             color: white;
-            padding: 10px;
+            padding: 8px 12px;
             border-radius: 6px;
             outline: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            width: 100%;
             transition: border-color 0.2s;
         }
 
@@ -97,14 +98,24 @@
         .color-inputs {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
+            flex-wrap: wrap; /* Wraps items cleanly on extra narrow phone screens */
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 60px;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 6px;
             cursor: pointer;
             background: none;
@@ -136,7 +147,7 @@
             color: #0f172a;
             border: none;
             padding: 12px 24px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
@@ -144,6 +155,7 @@
             letter-spacing: 1px;
             transition: background 0.2s, transform 0.1s;
             text-align: center;
+            width: 100%;
         }
 
         .btn:hover {
@@ -157,22 +169,27 @@
         .btn-secondary {
             background-color: #475569;
             color: #f8fafc;
-            margin-top: 15px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
         }
 
         .btn-secondary:hover {
             background-color: #334155;
         }
 
-        /* Game Display Section */
+        /* Responsive Game Display Section */
         #game-section {
             display: none;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            width: 100%;
+            max-width: 800px;
         }
 
         .canvas-container {
+            width: 100%;
             border: 4px solid #fff;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -182,26 +199,38 @@
 
         canvas {
             display: block;
+            width: 100%; /* Dynamically scales the canvas width to fit the screen */
+            height: auto; /* Scales height while keeping original proportion */
+            touch-action: none; /* Disables default zoom/scroll gestures during gameplay */
         }
 
         .controls-info {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #94a3b8;
-            max-width: 600px;
+            max-width: 100%;
             line-height: 1.4;
+            padding: 0 10px;
         }
 
-        /* Utility classes */
-        .hidden {
-            display: none !important;
+        /* Responsive Breakpoints */
+        @media (max-width: 500px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* Stacks layout elements vertically on smartphones */
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .menu-card {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="setup-section">
-        <h1>Pong Customization</h1>
+        <h1>Custom Pong</h1>
         <div class="menu-card">
             
             <div class="section-title">Game Options</div>
@@ -252,20 +281,20 @@
                 <div class="form-group full-width">
                     <label>Colors</label>
                     <div class="color-inputs">
-                        <div class="form-group" style="align-items: center;">
-                            <span style="font-size:0.75rem; color:#94a3b8;">Ball</span>
+                        <div class="color-item">
+                            <span style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px;">Ball</span>
                             <input type="color" id="ball-color" value="#ffffff">
                         </div>
-                        <div class="form-group custom-color-ctrl" style="align-items: center;">
-                            <span style="font-size:0.75rem; color:#94a3b8;">P1 Color</span>
+                        <div class="color-item">
+                            <span style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px;">P1 Color</span>
                             <input type="color" id="p1-color" value="#38bdf8">
                         </div>
-                        <div class="form-group custom-color-ctrl" style="align-items: center;">
-                            <span style="font-size:0.75rem; color:#94a3b8;">P2 Color</span>
+                        <div class="color-item">
+                            <span style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px;">P2 Color</span>
                             <input type="color" id="p2-color" value="#f43f5e">
                         </div>
-                        <div class="form-group custom-color-ctrl" style="align-items: center;">
-                            <span style="font-size:0.75rem; color:#94a3b8;">Background</span>
+                        <div class="color-item">
+                            <span style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px;">Background</span>
                             <input type="color" id="bg-color" value="#000000">
                         </div>
                     </div>
@@ -282,8 +311,8 @@
             <canvas id="pong" width="800" height="400"></canvas>
         </div>
         <div class="controls-info" id="controls-text">
-            Player 1: Mouse movement or W/S keys.<br>
-            Player 2 (AI): Moves automatically.
+            Player 1: Touch & Drag or W/S keys.<br>
+            Player 2: Moves automatically.
         </div>
         <button class="btn btn-secondary" id="menu-btn">Back to Settings</button>
     </div>
@@ -305,7 +334,6 @@
         const ballSizeInput = document.getElementById("ball-size");
         const sizeValLabel = document.getElementById("size-val");
         
-        // Custom Color Controllers
         const ballColorInput = document.getElementById("ball-color");
         const p1ColorInput = document.getElementById("p1-color");
         const p2ColorInput = document.getElementById("p2-color");
@@ -315,96 +343,37 @@
         const menuBtn = document.getElementById("menu-btn");
         const controlsText = document.getElementById("controls-text");
 
-        // Game State & Configuration Variables
+        // Game Variables
         let gameRunning = false;
         let animationFrameId;
         const keysPressed = {};
-        const paddleSpeed = 7;
+        const paddleSpeed = 8;
         const initialBallSpeed = 5;
 
-        // Visual Theme Templates
         const themes = {
-            classic: {
-                bg: "#000000",
-                p1: "#ffffff",
-                p2: "#ffffff",
-                ball: "#ffffff",
-                border: "#ffffff"
-            },
-            neon: {
-                bg: "#0f051d",
-                p1: "#00f0ff",
-                p2: "#ff007f",
-                ball: "#ffff00",
-                border: "#00f0ff"
-            },
-            forest: {
-                bg: "#0c2310",
-                p1: "#d4af37",
-                p2: "#8b5a2b",
-                ball: "#f5f5dc",
-                border: "#d4af37"
-            },
-            cyberpunk: {
-                bg: "#111827",
-                p1: "#f43f5e",
-                p2: "#10b981",
-                ball: "#facc15",
-                border: "#4b5563"
-            }
+            classic: { bg: "#000000", p1: "#ffffff", p2: "#ffffff", ball: "#ffffff" },
+            neon: { bg: "#0f051d", p1: "#00f0ff", p2: "#ff007f", ball: "#ffff00" },
+            forest: { bg: "#0c2310", p1: "#d4af37", p2: "#8b5a2b", ball: "#f5f5dc" },
+            cyberpunk: { bg: "#111827", p1: "#f43f5e", p2: "#10b981", ball: "#facc15" }
         };
 
-        // Game Settings Payload
         const config = {
-            mode: 1, // 1 or 2 players
-            theme: "classic",
+            mode: 1,
             p1Name: "Player 1",
             p2Name: "CPU",
             ballShape: "circle",
             ballSize: 10,
-            colors: {
-                bg: "#000000",
-                p1: "#ffffff",
-                p2: "#ffffff",
-                ball: "#ffffff",
-                border: "#ffffff"
-            }
+            colors: { bg: "#000000", p1: "#ffffff", p2: "#ffffff", ball: "#ffffff", border: "#ffffff" }
         };
 
-        // Standard Game Entities
         const paddleWidth = 12;
         const paddleHeight = 100;
 
-        const p1 = {
-            x: 10,
-            y: 0,
-            width: paddleWidth,
-            height: paddleHeight,
-            score: 0,
-            color: ""
-        };
+        const p1 = { x: 10, y: 0, width: paddleWidth, height: paddleHeight, score: 0, color: "" };
+        const p2 = { x: 0, y: 0, width: paddleWidth, height: paddleHeight, score: 0, color: "" };
+        const ball = { x: 0, y: 0, radius: 10, speed: initialBallSpeed, velocityX: initialBallSpeed, velocityY: initialBallSpeed, color: "", shape: "circle" };
 
-        const p2 = {
-            x: 0,
-            y: 0,
-            width: paddleWidth,
-            height: paddleHeight,
-            score: 0,
-            color: ""
-        };
-
-        const ball = {
-            x: 0,
-            y: 0,
-            radius: 10,
-            speed: initialBallSpeed,
-            velocityX: initialBallSpeed,
-            velocityY: initialBallSpeed,
-            color: "",
-            shape: "circle"
-        };
-
-        // Menu Event Listeners
+        // Setup Panel Listeners
         gameModeSelect.addEventListener("change", (e) => {
             if (e.target.value === "1") {
                 p2Label.innerText = "Player 2 Name";
@@ -425,11 +394,8 @@
             applyThemePreset(e.target.value);
         });
 
-        // Event listener helpers to force UI into 'custom' mode if user manually updates color inputs
         [ballColorInput, p1ColorInput, p2ColorInput, bgColorInput].forEach(elem => {
-            elem.addEventListener("input", () => {
-                themeSelect.value = "custom";
-            });
+            elem.addEventListener("input", () => { themeSelect.value = "custom"; });
         });
 
         function applyThemePreset(themeKey) {
@@ -441,28 +407,55 @@
             ballColorInput.value = theme.ball;
         }
 
-        // Initialize theme UI elements on load
         applyThemePreset("classic");
-        p2NameInput.disabled = true; // Start in 1-player mode
+        p2NameInput.disabled = true;
 
-        // Controls Keyboard Tracking
-        window.addEventListener("keydown", (e) => {
-            keysPressed[e.code] = true;
-        });
+        // Desktop Controls: Keyboard Tracking
+        window.addEventListener("keydown", (e) => { keysPressed[e.code] = true; });
+        window.addEventListener("keyup", (e) => { keysPressed[e.code] = false; });
 
-        window.addEventListener("keyup", (e) => {
-            keysPressed[e.code] = false;
-        });
-
-        // P1 Mouse Tracking
+        // Desktop Controls: Mouse Tracking
         canvas.addEventListener("mousemove", (e) => {
             let rect = canvas.getBoundingClientRect();
-            p1.y = e.clientY - rect.top - p1.height / 2;
+            let relativeY = e.clientY - rect.top;
+            let scaleY = canvas.height / rect.height; // Maps relative coordinates back to internal resolution (800x400)
+            p1.y = (relativeY * scaleY) - p1.height / 2;
         });
 
-        // Initialize parameters and start game loop
+        // Mobile/Tablet Controls: Touch Screen Event Handler (Supports Multi-touch)
+        function handleTouch(e) {
+            e.preventDefault(); // Prevents web page bouncing/zooming gestures
+            let rect = canvas.getBoundingClientRect();
+            let scaleX = canvas.width / rect.width;
+            let scaleY = canvas.height / rect.height;
+
+            for (let i = 0; i < e.touches.length; i++) {
+                let touch = e.touches[i];
+                let relativeX = touch.clientX - rect.left;
+                let relativeY = touch.clientY - rect.top;
+
+                let canvasX = relativeX * scaleX;
+                let canvasY = relativeY * scaleY;
+
+                if (config.mode === 1) {
+                    // Single Player Mode: Any touch controls the left paddle
+                    p1.y = canvasY - p1.height / 2;
+                } else {
+                    // Multi Player Mode: Split screen touch
+                    if (canvasX < canvas.width / 2) {
+                        p1.y = canvasY - p1.height / 2; // Left side touch -> Player 1
+                    } else {
+                        p2.y = canvasY - p2.height / 2; // Right side touch -> Player 2
+                    }
+                }
+            }
+        }
+
+        canvas.addEventListener("touchstart", handleTouch, { passive: false });
+        canvas.addEventListener("touchmove", handleTouch, { passive: false });
+
+        // Initialize and Run
         startBtn.addEventListener("click", () => {
-            // Apply configurations
             config.mode = parseInt(gameModeSelect.value);
             config.p1Name = p1NameInput.value.trim() || "Player 1";
             config.p2Name = p2NameInput.value.trim() || (config.mode === 1 ? "CPU" : "Player 2");
@@ -473,20 +466,16 @@
             config.colors.p1 = p1ColorInput.value;
             config.colors.p2 = p2ColorInput.value;
             config.colors.ball = ballColorInput.value;
-            // Border matches either the player 1 theme choice or white
             config.colors.border = p1ColorInput.value;
 
-            // Set dynamic canvas border style
             document.querySelector(".canvas-container").style.borderColor = config.colors.border;
 
-            // Setup instruction panel text
             if (config.mode === 1) {
-                controlsText.innerHTML = `<strong>${config.p1Name}</strong>: Use your Mouse or W/S keys to move.<br><strong>${config.p2Name}</strong> is automated.`;
+                controlsText.innerHTML = `<strong>${config.p1Name}</strong>: Drag on screen, use Mouse, or W/S keys.<br><strong>${config.p2Name}</strong> is auto-controlled.`;
             } else {
-                controlsText.innerHTML = `<strong>${config.p1Name}</strong>: Use W/S keys.<br><strong>${config.p2Name}</strong>: Use Up/Down Arrow keys.`;
+                controlsText.innerHTML = `<strong>${config.p1Name}</strong>: Drag left screen side / W-S keys.<br><strong>${config.p2Name}</strong>: Drag right screen side / Up-Down arrows.`;
             }
 
-            // Setup entity values
             p1.y = canvas.height / 2 - paddleHeight / 2;
             p1.score = 0;
             p1.color = config.colors.p1;
@@ -501,7 +490,6 @@
             ball.color = config.colors.ball;
             resetBall();
 
-            // Toggle screens
             setupSection.style.display = "none";
             gameSection.style.display = "flex";
 
@@ -520,12 +508,10 @@
             ball.x = canvas.width / 2;
             ball.y = canvas.height / 2;
             ball.speed = initialBallSpeed;
-            // Reverse direction towards the scoring player
             ball.velocityX = (Math.random() > 0.5 ? 1 : -1) * initialBallSpeed;
             ball.velocityY = (Math.random() > 0.5 ? 1 : -1) * (initialBallSpeed - 1);
         }
 
-        // Standard bounding box intersection formula
         function collision(b, p) {
             p.top = p.y;
             p.bottom = p.y + p.height;
@@ -540,71 +526,50 @@
             return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
         }
 
-        // Logic Engine Update Frame
         function update() {
-            // Player 1 input checks (W / S keys)
-            if (keysPressed["KeyW"] || keysPressed["Keyw"]) {
-                p1.y -= paddleSpeed;
-            }
-            if (keysPressed["KeyS"] || keysPressed["Keys"]) {
-                p1.y += paddleSpeed;
-            }
-            // Retain paddle 1 boundary clip
+            // Keyboard Movement checks (desktop fallback)
+            if (keysPressed["KeyW"] || keysPressed["Keyw"]) p1.y -= paddleSpeed;
+            if (keysPressed["KeyS"] || keysPressed["Keys"]) p1.y += paddleSpeed;
+
             if (p1.y < 0) p1.y = 0;
             if (p1.y + p1.height > canvas.height) p1.y = canvas.height - p1.height;
 
-            // Player 2 controls mapping (AI vs Human)
             if (config.mode === 1) {
-                // AI behavior
                 let targetY = ball.y - (p2.height / 2);
-                p2.y += (targetY - p2.y) * 0.08; // 0.08 acts as the AI delay threshold
+                p2.y += (targetY - p2.y) * 0.08;
             } else {
-                // Human 2 keyboard mapping
-                if (keysPressed["ArrowUp"]) {
-                    p2.y -= paddleSpeed;
-                }
-                if (keysPressed["ArrowDown"]) {
-                    p2.y += paddleSpeed;
-                }
+                if (keysPressed["ArrowUp"]) p2.y -= paddleSpeed;
+                if (keysPressed["ArrowDown"]) p2.y += paddleSpeed;
             }
-            // Retain paddle 2 boundary clip
+
             if (p2.y < 0) p2.y = 0;
             if (p2.y + p2.height > canvas.height) p2.y = canvas.height - p2.height;
 
-            // Track ball displacement
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
 
-            // Edge bounce logic top and bottom walls
             if (ball.y - ball.radius < 0) {
-                ball.y = ball.radius; // Clip positioning to prevent overlap bugs
+                ball.y = ball.radius;
                 ball.velocityY = -ball.velocityY;
             } else if (ball.y + ball.radius > canvas.height) {
                 ball.y = canvas.height - ball.radius;
                 ball.velocityY = -ball.velocityY;
             }
 
-            // Paddle selection check
             let activePaddle = (ball.x < canvas.width / 2) ? p1 : p2;
 
             if (collision(ball, activePaddle)) {
-                // Determine collision center offset
                 let collidePoint = ball.y - (activePaddle.y + activePaddle.height / 2);
-                // Normalized coordinate conversion (-1 to 1)
                 collidePoint = collidePoint / (activePaddle.height / 2);
 
-                // Math.PI/4 determines peak bounce trajectory angle (45 degrees max)
                 let angleRad = (Math.PI / 4) * collidePoint;
                 let direction = (ball.x < canvas.width / 2) ? 1 : -1;
 
                 ball.velocityX = direction * ball.speed * Math.cos(angleRad);
                 ball.velocityY = ball.speed * Math.sin(angleRad);
-
-                // Slightly speed up game velocity per bounce to scale difficulty
                 ball.speed += 0.35;
             }
 
-            // Point tracker updates
             if (ball.x - ball.radius < 0) {
                 p2.score++;
                 resetBall();
@@ -614,13 +579,11 @@
             }
         }
 
-        // Draw Rect Utility
         function drawRect(x, y, w, h, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x, y, w, h);
         }
 
-        // Dynamic Shape Handler
         function drawBall(x, y, r, color, shape) {
             ctx.fillStyle = color;
             if (shape === "square") {
@@ -633,7 +596,6 @@
             }
         }
 
-        // Draw Line Matrix
         function drawNet() {
             ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
             ctx.lineWidth = 2;
@@ -645,41 +607,30 @@
             ctx.setLineDash([]);
         }
 
-        // Dynamic Scoreboard & Overhead Name Tag Render
         function drawHUD() {
             ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
             ctx.font = "20px 'Segoe UI', sans-serif";
-            
-            // Left Score details
             ctx.textAlign = "center";
+            
             ctx.fillText(config.p1Name, canvas.width / 4, 40);
             ctx.font = "bold 45px 'Segoe UI', sans-serif";
             ctx.fillText(p1.score, canvas.width / 4, 90);
 
-            // Right Score details
             ctx.font = "20px 'Segoe UI', sans-serif";
             ctx.fillText(config.p2Name, (3 * canvas.width) / 4, 40);
             ctx.font = "bold 45px 'Segoe UI', sans-serif";
             ctx.fillText(p2.score, (3 * canvas.width) / 4, 90);
         }
 
-        // Render Graphics frame
         function render() {
-            // Paint background
             drawRect(0, 0, canvas.width, canvas.height, config.colors.bg);
-
             drawNet();
             drawHUD();
-
-            // Paint paddles
             drawRect(p1.x, p1.y, p1.width, p1.height, p1.color);
             drawRect(p2.x, p2.y, p2.width, p2.height, p2.color);
-
-            // Paint ball asset
             drawBall(ball.x, ball.y, ball.radius, ball.color, ball.shape);
         }
 
-        // Primary Game Loop
         function gameLoop() {
             if (!gameRunning) return;
             update();
